@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240802185332_appointments")]
+    partial class appointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,8 +95,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppointmentScheduleId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("AppointmentDateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
@@ -101,6 +104,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("timestamp with time zone");
@@ -114,7 +120,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentScheduleId");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -175,11 +181,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -203,17 +204,17 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("timestamp with time zone");
@@ -366,9 +367,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
                 {
-                    b.HasOne("Domain.Entities.AvailableSchedule", "AppointmentSchedule")
+                    b.HasOne("Domain.Entities.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("AppointmentScheduleId")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -378,7 +379,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppointmentSchedule");
+                    b.Navigation("Doctor");
 
                     b.Navigation("Patient");
                 });
@@ -392,54 +393,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
-                {
-                    b.OwnsOne("Domain.ValueObjects.Cpf", "CPF", b1 =>
-                        {
-                            b1.Property<Guid>("DoctorId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("character varying(11)");
-
-                            b1.HasKey("DoctorId");
-
-                            b1.ToTable("Doctors");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DoctorId");
-                        });
-
-                    b.Navigation("CPF")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Patient", b =>
-                {
-                    b.OwnsOne("Domain.ValueObjects.Cpf", "CPF", b1 =>
-                        {
-                            b1.Property<Guid>("PatientId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("character varying(11)");
-
-                            b1.HasKey("PatientId");
-
-                            b1.ToTable("Patients");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PatientId");
-                        });
-
-                    b.Navigation("CPF")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

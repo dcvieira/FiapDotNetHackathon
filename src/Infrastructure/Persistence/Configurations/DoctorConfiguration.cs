@@ -21,12 +21,13 @@ public class DoctorConfiguration : BaseEntityConfiguration<Doctor>
             .HasMaxLength(20)
             .IsRequired();
 
-        //builder.HasMany(d => d.AvailableSchedules)
-        //   .WithOne(s => s.Doctor)
-        //   .HasForeignKey(s => s.DoctorId);
+        builder.Property(x => x.Email)
+            .HasMaxLength(100)
+            .IsRequired();
 
-        //builder.HasMany(d => d.Appointments)
-        //    .WithOne(a => a.Doctor)
-        //    .HasForeignKey(a => a.DoctorId);
+        builder.OwnsOne(a => a.CPF)
+           .Property(a => a.Value)
+           .HasMaxLength(11)
+           .IsRequired();
     }
 }

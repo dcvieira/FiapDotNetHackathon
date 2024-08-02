@@ -27,6 +27,6 @@ public class ListDoctorsQueryHandler : IRequestHandler<ListDoctorsQuery, List<Do
     public async Task<List<DoctorDto>> Handle(ListDoctorsQuery request, CancellationToken cancellationToken)
     {
   
-        return await _context.Doctors.Select(d => new DoctorDto(d.Name, d.CRM)).ToListAsync();
+        return await _context.Doctors.Select(d => new DoctorDto(d.Name, d.CPF.Value, d.CRM, d.Email)).ToListAsync();
     }
 }

@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Doctor.Dtos;
 using Application.User;
 using Domain.Exceptions;
+using Domain.ValueObjects;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,17 @@ using System.Threading.Tasks;
 namespace Application.Doctor.Command;
 public class RegisterDoctorCommand : IRequest<DoctorDto>
 {
-    public RegisterDoctorCommand(string name, string crm)
+    public RegisterDoctorCommand(string name, string crm, string cpf)
     {
         Name = name;
         CRM = crm;
+        CPF = cpf;
+
     }
 
     public string Name { get; set; }
     public string CRM { get; set; }
+    public string CPF { get; set; }
 }
 
 
@@ -50,12 +54,15 @@ public class RegisterDoctorCommandHandler : IRequestHandler<RegisterDoctorComman
         (
             id: userId,
             name : request.Name,
-            cRM: request.CRM
+            cpf: Cpf.From(request.CPF),
+            cRM: request.CRM,
+            email: _loggedInUserAccessor.LoggedInUser.Email
+
         );
 
         _context.Doctors.Add(doctor);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new DoctorDto(doctor.Name, doctor.CRM);
+        return new DoctorDto(doctor.Name, doctor.CPF.Value, doctor.CRM, doctor.Email);
     }
 }

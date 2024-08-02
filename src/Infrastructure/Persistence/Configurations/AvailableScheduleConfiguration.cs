@@ -8,8 +8,6 @@ public class AvailableScheduleConfiguration : BaseEntityConfiguration<AvailableS
 {
     public override void ConfigureCore(EntityTypeBuilder<AvailableSchedule> builder)
     {
-        builder.Property(x => x.DoctorId)
-            .IsRequired();
 
         builder.Property(s => s.AvailableDateTime)
             .IsRequired();
@@ -17,8 +15,10 @@ public class AvailableScheduleConfiguration : BaseEntityConfiguration<AvailableS
         builder.Property(s => s.IsAvailable)
            .IsRequired();
 
-        //builder.HasOne(s => s.Doctor)
-        // .WithMany(d => d.AvailableSchedules)
-        // .HasForeignKey(s => s.DoctorId);
+        builder.HasOne(s => s.Doctor)
+         .WithMany()
+         .IsRequired();
+
+        builder.Navigation(a => a.Doctor).AutoInclude();
     }
 }

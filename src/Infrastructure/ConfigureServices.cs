@@ -4,8 +4,6 @@ using Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Application.User;
 using Infrastructure.Services;
 
@@ -25,6 +23,7 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services.AddScoped<ILoggedInUserAccessor, HttpContextLoggedInUserAccessor>();
+        services.AddScoped<IEmailSender, EmailService>();   
 
         return services;
     }

@@ -1,4 +1,4 @@
 ﻿
 namespace Application.Doctor.Dtos;
 
-public record DoctorDto(string Name, string CRM);
+public record DoctorDto(string Name, string CPF, string CRM, string Email);

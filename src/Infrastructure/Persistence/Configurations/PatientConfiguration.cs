@@ -15,13 +15,15 @@ public class PatientConfiguration : BaseEntityConfiguration<Patient>
         builder.Property(x => x.Name)
             .HasMaxLength(100)
             .IsRequired();
-
-        builder.Property(x => x.CPF)
-            .HasMaxLength(11)
+        
+        builder.Property(x => x.Email)
+            .HasMaxLength(100)
             .IsRequired();
 
-        //builder.HasMany(p => p.Appointments)
-        //    .WithOne(a => a.Patient)
-        //    .HasForeignKey(a => a.PatientId);
+
+        builder.OwnsOne(a => a.CPF)
+           .Property(a => a.Value)
+           .HasMaxLength(11)
+           .IsRequired();
     }
 }

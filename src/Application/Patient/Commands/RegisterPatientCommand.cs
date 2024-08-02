@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Patient.Dtos;
 using Application.User;
 using Domain.Exceptions;
+using Domain.ValueObjects;
 using MediatR;
 
 namespace Application.Doctor.Command;
@@ -45,12 +46,13 @@ public class RegisterPatientCommandHandler : IRequestHandler<RegisterPatientComm
         (
             id: userId,
             name : request.Name,
-            cPF: request.CPF
+            cpf: Cpf.From(request.CPF),
+            email: _loggedInUserAccessor.LoggedInUser.Email
         );
 
         _context.Patients.Add(patient);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new PatientDto(patient.Name, patient.CPF);
+        return new PatientDto(patient.Name, patient.CPF.Value, patient.Email);
     }
 }
