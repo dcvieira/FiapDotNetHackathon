@@ -26,10 +26,11 @@ namespace Application.Appointment.Commands
         private readonly ILoggedInUserAccessor _loggedInUser;
         private readonly IEmailSender _emailSender;
 
-        public BookAppointmentCommandHandler(IApplicationDbContext context, ILoggedInUserAccessor loggedInUser)
+        public BookAppointmentCommandHandler(IApplicationDbContext context, ILoggedInUserAccessor loggedInUser, IEmailSender emailSender)
         {
             _context = context;
             _loggedInUser = loggedInUser;
+            _emailSender = emailSender;
         }
 
         public async Task<AppointmentDto> Handle(BookAppointmentCommand request, CancellationToken cancellationToken)
@@ -71,13 +72,13 @@ namespace Application.Appointment.Commands
             string formato = "dddd, dd 'de' MMMM 'de' yyyy 'às' HH:mm";
 
             var emailTemplate = new StringBuilder();
-                    emailTemplate.AppendLine($"<p>Olá, Dr.{availableSchedule.Doctor.Name}!</p>");
+                    emailTemplate.AppendLine($"<p>Olá, Dr. {availableSchedule.Doctor.Name}!</p>");
             emailTemplate.AppendLine($"<p>Você tem uma nova consulta marcada!</p>");
             emailTemplate.AppendLine($"<p>Paciente: {patient.Name}</p>");
             emailTemplate.AppendLine($"<p>Data e horário: {availableSchedule.AvailableDateTime.ToString(formato)}</p>");
             emailTemplate.AppendLine($"<p></p>");
 
-            await _emailSender.SendEmailAsync(availableSchedule.Doctor.Email, "Health & Med - Nova consulta agendada", "Your appointment has been booked");
+            await _emailSender.SendEmailAsync(availableSchedule.Doctor.Email, "Health & Med - Nova consulta agendada", emailTemplate.ToString());
 
             await _context.SaveChangesAsync(cancellationToken);
 
@@ -87,12 +88,3 @@ namespace Application.Appointment.Commands
         }
     }
 }
-
-
-//Título do e-mail:
-//”Health & Med - Nova consulta agendada”
-//Corpo do e-mail:
-//”Olá, Dr. {nome_do_médico}!
-//Você tem uma nova consulta marcada!
-//Paciente: { nome_do_paciente}.
-//Data e horário: { data}às {horário_agendado}.”
