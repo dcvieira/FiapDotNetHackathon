@@ -1,6 +1,3 @@
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/dcvieira0044/automation-testing-strategies-aspnet/29) ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dcvieira0044/automation-testing-strategies-aspnet/29)
-
-
 # Hackathon - Turma .NET
 A Health&Med, é uma Operadora de Saúde que tem como objetivo digitalizar seus processos e operação. O principal gargalo da empresa é o Agendamento de
 Consultas Médicas, que atualmente ocorre exclusivamente através de ligações para a central de atendimento da empresa.
