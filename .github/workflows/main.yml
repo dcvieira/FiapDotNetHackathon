@@ -2,10 +2,16 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 name: Fiap Hackathon Build and Test
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+env:
+  AZURE_WEBAPP_NAME: "fiap-hackathon"
+
+ 
 
 jobs:
   build:
@@ -21,7 +27,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
     - name: Test
       run: dotnet test --no-build --verbosity normal --settings tests/project.runsettings
 
@@ -57,4 +63,14 @@ jobs:
         name: test-results
         path: ./*.html
         retention-days: 5
+
+    - name: Publish
+      run: dotnet publish --configuration Release  --no-build --output ./publish
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.API_PUBLISH_SECRET }}
+        package: ./publish
                 
