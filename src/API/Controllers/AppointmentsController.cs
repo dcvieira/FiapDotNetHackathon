@@ -1,5 +1,6 @@
 ﻿using Application.Appointment.Commands;
 using Application.Appointment.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -7,6 +8,7 @@ namespace API.Controllers;
 
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class AppointmentsController : ApiControllerBase
 {

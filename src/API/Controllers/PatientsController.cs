@@ -10,6 +10,7 @@ namespace API.Controllers;
 
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class PatientsController : ApiControllerBase
 {
@@ -22,7 +23,6 @@ public class PatientsController : ApiControllerBase
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> RegisterPatient([FromBody] RegisterPatientCommand command)
     {
         var patient = await Mediator.Send(command);

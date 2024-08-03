@@ -11,8 +11,8 @@ public class EmailService : IEmailSender
     private readonly SmtpClient _client;
     public EmailService(IConfiguration config)
     {
-        var port = config.GetValue<int>("Email:EmailPort");
-        var host = config.GetValue<string>("Email:EmailHost")!;
+        var port = config.GetValue<int>("Email:Port");
+        var host = config.GetValue<string>("Email:Host")!;
         _client = new() { Port = port, Host = host };
     }
 

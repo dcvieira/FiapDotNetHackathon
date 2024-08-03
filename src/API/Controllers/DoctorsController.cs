@@ -7,6 +7,7 @@ namespace API.Controllers;
 
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class DoctorsController : ApiControllerBase
 {
@@ -17,9 +18,10 @@ public class DoctorsController : ApiControllerBase
         _configuration = configuration;
     }
     [HttpGet("teste")]
+    [AllowAnonymous]
     public async Task<IActionResult> teste()
     {
-        var myValue = _configuration["ConnectionStrings:DefaultConnection"];
+        var myValue = _configuration["Email:Host"];
         return Ok(myValue);
     }
 
@@ -32,7 +34,6 @@ public class DoctorsController : ApiControllerBase
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> RegisterDoctor([FromBody] RegisterDoctorCommand command)
     {
         var doctor = await Mediator.Send(command);

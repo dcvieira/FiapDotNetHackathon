@@ -11,7 +11,7 @@ namespace Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
            options.UseNpgsql(
@@ -23,7 +23,15 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services.AddScoped<ILoggedInUserAccessor, HttpContextLoggedInUserAccessor>();
-        services.AddScoped<IEmailSender, EmailService>();   
+        
+        if(isDevelopment)
+        {
+            services.AddScoped<IEmailSender, EmailService>();
+        }
+        else
+        {
+            services.AddScoped<IEmailSender, RemoteEmailSender>();
+        } 
 
         return services;
     }
