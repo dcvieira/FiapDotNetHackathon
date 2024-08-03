@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Application.User;
 using Infrastructure.Services;
+using Infrastructure.Persistence.Interceptors;
 
 namespace Infrastructure;
 
@@ -13,6 +14,7 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
     {
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddDbContext<ApplicationDbContext>(options =>
            options.UseNpgsql(
                configuration.GetConnectionString("DefaultConnection")));
