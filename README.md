@@ -58,6 +58,8 @@ agendadas.
 
 ## Vídeo Youtube
 
+https://youtu.be/du4X4e3P0Ro
+
 ## Iniciando
 
 Para acessar a aplicação hospedada no Azure acesse o  endereço https://fiap-hackathon-f7cyata0hnd5djat.eastus-01.azurewebsites.net/swagger/index.html
