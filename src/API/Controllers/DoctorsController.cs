@@ -17,12 +17,12 @@ public class DoctorsController : ApiControllerBase
     {
         _configuration = configuration;
     }
-    [HttpGet("teste2")]
+    [HttpGet("teste3")]
     [AllowAnonymous]
     public async Task<IActionResult> teste()
     {
        
-        return Ok("Hello Fiap!");
+        return Ok("Hello Fiap Novo Teste!");
     }
 
     [HttpGet]
