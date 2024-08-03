@@ -62,7 +62,7 @@ jobs:
         retention-days: 5
 
     - name: Publish
-      run: dotnet publish --configuration Release  --no-build --output ./publish
+      run: dotnet publish ./src/API/API.csproj --configuration Release --output ./publish
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
