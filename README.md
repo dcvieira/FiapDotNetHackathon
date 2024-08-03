@@ -76,10 +76,7 @@ docker run --rm -d --name fakemail -p 3000:80 -p 2525:25 rnwood/smtp4dev
 
 ## Diagrama de banco de Dados
 
-This is a simple e-commerce application that has a few features
-that we want to explore automated testing strategies for.
-
-Here are the features:
+![architectural diagram](images/diagram_bd.JPG)
 
 ## API endpoints
 
