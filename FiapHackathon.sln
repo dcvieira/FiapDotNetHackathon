@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "src\API\API.csproj",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AA0084A7-9EDA-4EBA-AF75-6195F281BD17}"
 	ProjectSection(SolutionItems) = preProject
-		project.runsettings = project.runsettings
+		tests\project.runsettings = tests\project.runsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{5C05BFA8-F6F6-4082-8320-74663C4BA09A}"
