@@ -25,11 +25,17 @@ var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-//    await initialiser.InitialiseAsync();
-//}
+
+if(app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+    }
+}
+
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
