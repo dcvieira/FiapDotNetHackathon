@@ -10,6 +10,19 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class DoctorsController : ApiControllerBase
 {
+    private readonly IConfiguration _configuration;
+
+    public DoctorsController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    [HttpGet("teste")]
+    public async Task<IActionResult> teste()
+    {
+        var myValue = _configuration["ConnectionStrings:DefaultConnection"];
+        return Ok(myValue);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAllDoctors()
     {
